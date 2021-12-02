@@ -1,13 +1,7 @@
 package dev.tr7zw.entityculling;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
 import com.logisticscraft.occlusionculling.util.Vec3d;
-
 import dev.tr7zw.entityculling.access.Cullable;
 import dev.tr7zw.entityculling.access.EntityAccessor;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,6 +11,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.chunk.WorldChunk;
+
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class CullTask implements Runnable {
 
@@ -105,13 +104,13 @@ public class CullTask implements Runnable {
 								if (spectator || ((EntityAccessor)entity).isUnsafeGlowing()) {
 									cullable.setCulled(false);
 								} else {
-								    if(entity.getPos().isInRange(cameraMC, 128)) { // Max supported range currently for this mod
+								    if(entity.getPos().squaredDistanceTo(cameraMC) <= 128 * 128) { // Max supported range currently for this mod
     									Box boundingBox = entity.getVisibilityBoundingBox();
     									if(boundingBox.getXLength() > hitboxLimit || boundingBox.getYLength() > hitboxLimit || boundingBox.getZLength() > hitboxLimit) {
     									    cullable.setCulled(false); // To big to bother to cull
     									} else {
-    									    aabbMin.set(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-    									    aabbMax.set(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+    									    aabbMin.set(boundingBox.x1, boundingBox.y1, boundingBox.z1);
+    									    aabbMax.set(boundingBox.x2, boundingBox.y2, boundingBox.z2);
         									boolean visible = culling.isAABBVisible(aabbMin, aabbMax, camera);
         									cullable.setCulled(!visible);
     									}

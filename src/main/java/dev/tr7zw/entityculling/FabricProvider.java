@@ -2,7 +2,6 @@ package dev.tr7zw.entityculling;
 
 import com.logisticscraft.occlusionculling.DataProvider;
 import com.logisticscraft.occlusionculling.util.Vec3d;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleTypes;
@@ -22,7 +21,7 @@ public class FabricProvider implements DataProvider {
     @Override
     public boolean isOpaqueFullCube(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        return world.getBlockState(pos).isOpaqueFullCube(world, pos);
+        return world.getBlockState(pos).isFullOpaque(world, pos);
     }
 
     @Override

@@ -1,34 +1,27 @@
 package dev.tr7zw.entityculling.mixin;
 
+import dev.tr7zw.entityculling.EntityCullingMod;
+import dev.tr7zw.entityculling.access.Cullable;
+import dev.tr7zw.entityculling.access.EntityRendererInter;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.util.math.Matrix4f;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import dev.tr7zw.entityculling.EntityCullingMod;
-import dev.tr7zw.entityculling.access.Cullable;
-import dev.tr7zw.entityculling.access.EntityRendererInter;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3d;
-
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
-    public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera,
-            GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f,
-            CallbackInfo info) {
+    public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
 
     }
 
@@ -62,7 +55,7 @@ public class WorldRendererMixin {
                 double f = z + vec3d.getZ();
                 matrices.push();
                 matrices.translate(d, e, f);
-                entityRendererInter.shadowRenderLabelIfPresent(entity, entity.getDisplayName(), matrices,
+                entityRendererInter.shadowRenderLabelIfPresent(entity, entity.getDisplayName().asFormattedString(), matrices,
                         vertexConsumers, this.entityRenderDispatcher.getLight(entity, tickDelta));
                 matrices.pop();
             }

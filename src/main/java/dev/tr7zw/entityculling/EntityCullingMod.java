@@ -1,17 +1,8 @@
 package dev.tr7zw.entityculling;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -22,8 +13,15 @@ import net.minecraft.client.options.KeyBinding;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class EntityCullingMod implements ModInitializer {
 
@@ -81,13 +79,11 @@ public class EntityCullingMod implements ModInitializer {
 	        	 ClientPlayerEntity player = MinecraftClient.getInstance().player;
 	        	if(enabled) {
 	        	    if (player != null) {
-	                    player.sendSystemMessage(new LiteralText("Culling on").formatted(Formatting.GREEN),
-	                            Util.NIL_UUID);
+	                    player.sendMessage(new LiteralText("Culling on").formatted(Formatting.GREEN));
 	                }
 	        	} else {
                     if (player != null) {
-                        player.sendSystemMessage(new LiteralText("Culling off").formatted(Formatting.RED),
-                                Util.NIL_UUID);
+                        player.sendMessage(new LiteralText("Culling off").formatted(Formatting.RED));
                     }
 	        	}
 	        }else {
